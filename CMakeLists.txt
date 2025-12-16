@@ -51,8 +51,8 @@ pico_set_program_name(sem_pro_pico "sem_pro_pico")
 pico_set_program_version(sem_pro_pico "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(sem_pro_pico 1)
-pico_enable_stdio_usb(sem_pro_pico 0)
+pico_enable_stdio_uart(sem_pro_pico 0)
+pico_enable_stdio_usb(sem_pro_pico 1)
 
 # Add the standard library to the build
 target_link_libraries(sem_pro_pico

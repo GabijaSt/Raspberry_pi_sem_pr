@@ -13,8 +13,8 @@ extern "C" {
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
 
-#define WIFI_SSID "Xiaomi_13_Pro"
-#define WIFI_PASS "daniklox"
+#define WIFI_SSID "Ola"
+#define WIFI_PASS "s7urbnupsymc2"
 #define MQTT_TOPIC "pico/sensors"
 
 using namespace std;
@@ -120,14 +120,20 @@ void MyApp::mqttPublish(float tempC, float lightLux)
         "{\"temperature\": %.2f, \"light\": %.2f}", tempC, lightLux);
     if (n < 0) return;
 
-    mqtt_publish(
+    err_t err = mqtt_publish(
         mqttClient,
         MQTT_TOPIC,
         json, strlen(json),
-        0,   // retain = false
-        0,   // QoS 0
+        0, 
+        0, 
         nullptr, nullptr
     );
+
+    if (err == ERR_OK) {
+        printf("Published: %s (OK)\n", json);
+    } else {
+        printf("ERROR: MQTT Publish failed with code: %d\n", err); 
+    }
 
     printf("Published: %s\n", json);
 }

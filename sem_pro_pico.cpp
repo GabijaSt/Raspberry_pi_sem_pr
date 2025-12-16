@@ -22,7 +22,7 @@ int main()
     cyw43_arch_enable_sta_mode();
 
     printf("Connecting to Wi-Fi...\n");
-    if (cyw43_arch_wifi_connect_timeout_ms("Your Wi-Fi SSID", "Your Wi-Fi Password", CYW43_AUTH_WPA2_AES_PSK, 30000))
+    if (cyw43_arch_wifi_connect_timeout_ms("Ola", "s7urbnupsymc2", CYW43_AUTH_WPA2_AES_PSK, 30000))
     {
         printf("failed to connect.\n");
         return 1;

@@ -209,14 +209,13 @@ void MyApp::run()
         float humidity;
 
         if (shtc3.read(humidity)) {
-            printf("RH: %.2f %%\n", humidity);
         } else {
             printf("SHTC3 read failed\n");
         }
 
         mqttPublish(tempC, light, humidity);
 
-        printf("Temp: %.1f °C | Light: %.1f lux\n | RH: %.2f %%\n", tempC, light, humidity);
+        printf("Temp: %.1f °C | Light: %.1f lux | RH: %.2f %%\n", tempC, light, humidity);
 
         sleep_ms(2000);  // publish once per second
     }

@@ -90,31 +90,3 @@ bool SHTC3::read(float& humidity_rh)
     sleep();
     return true;
 }
-
-
-
-// int main()
-// {
-//     stdio_init_all();
-
-//     i2c_init(i2c0, 400000);
-//     gpio_set_function(4, GPIO_FUNC_I2C);
-//     gpio_set_function(5, GPIO_FUNC_I2C);
-//     gpio_pull_up(4);
-//     gpio_pull_up(5);
-
-//     SHTC3 sensor(i2c0);
-
-//     if (!sensor.init()) {
-//         printf("SHTC3 init failed\n");
-//         return 0;
-//     }
-
-//     while (1) {
-//         float t, h;
-//         if (sensor.read(t, h)) {
-//             printf("T: %.2f C,  RH: %.2f %%\n", t, h);
-//         }
-//         sleep_ms(1000);
-//     }
-// }

@@ -5,6 +5,9 @@
 #include "LightSensorLDR.h"
 #include "DieTemp.h"
 
+#include "hardware/i2c.h"
+#include "SHTC3.h"
+
 extern "C" {
 #include "lwip/apps/mqtt.h"
 #include "lwip/ip_addr.h"
@@ -35,7 +38,9 @@ private:
 
     // Internal helpers
     void mqttInit();
-    void mqttPublish(float tempC, float lightLux);
+    void mqttPublish(float tempC, float lightLux, float humidity);
+
+    SHTC3 shtc3; 
 };
 
 #endif // MYAPP_H

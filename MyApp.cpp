@@ -5,7 +5,7 @@ extern "C" {
 #include "lwip/apps/mqtt.h"
 #include "lwip/apps/mqtt_priv.h"
 }
-
+#include <string.h>
 #include "MyApp.h"
 #include <iostream>
 #include <iomanip>
@@ -27,8 +27,21 @@ static void mqtt_connection_cb(mqtt_client_t* client, void* arg, mqtt_connection
 // Constructor
 // -----------------------------------------------------------------------------
 MyApp::MyApp()
+    : shtc3(i2c0)
 {
     printf("Initializing MyApp...\n");
+
+    i2c_init(i2c0, 400000);
+    gpio_set_function(4, GPIO_FUNC_I2C);
+    gpio_set_function(5, GPIO_FUNC_I2C);
+    gpio_pull_up(4);
+    gpio_pull_up(5);
+
+    if (!shtc3.init()) {
+        printf("SHTC3 init failed\n");
+    } else {
+        printf("SHTC3 ready\n");
+    }
 
     // Init WiFi hardware
     if (cyw43_arch_init()) {
@@ -111,13 +124,13 @@ void MyApp::connectToBroker(const ip_addr_t &ip)
 // -----------------------------------------------------------------------------
 // Publish JSON message
 // -----------------------------------------------------------------------------
-void MyApp::mqttPublish(float tempC, float lightLux)
+void MyApp::mqttPublish(float tempC, float lightLux, float humidity)
 {
     if (!mqttClient || !mqttConnected) return;
 
     char json[128];
     int n = snprintf(json, sizeof(json),
-        "{\"temperature\": %.2f, \"light\": %.2f}", tempC, lightLux);
+        "{\"temperature\": %.2f, \"light\": %.2f, \"humidity\": %.2f}", tempC, lightLux, humidity);
     if (n < 0) return;
 
     err_t err = mqtt_publish(
@@ -125,7 +138,7 @@ void MyApp::mqttPublish(float tempC, float lightLux)
         MQTT_TOPIC,
         json, strlen(json),
         0, 
-        0, 
+        0,
         nullptr, nullptr
     );
 
@@ -193,10 +206,17 @@ void MyApp::run()
     {
         float tempC = dieTemp.readCelsius();
         float light = lightSensor.readLux();
+        float humidity;
 
-        mqttPublish(tempC, light);
+        if (shtc3.read(humidity)) {
+            printf("RH: %.2f %%\n", humidity);
+        } else {
+            printf("SHTC3 read failed\n");
+        }
 
-        printf("Temp: %.1f °C | Light: %.1f lux\n", tempC, light);
+        mqttPublish(tempC, light, humidity);
+
+        printf("Temp: %.1f °C | Light: %.1f lux\n | RH: %.2f %%\n", tempC, light, humidity);
 
         sleep_ms(2000);  // publish once per second
     }

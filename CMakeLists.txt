@@ -45,7 +45,8 @@ add_executable(sem_pro_pico
     KeyPress.cpp
     ADC.cpp
     LightSensorLDR.cpp
-    DieTemp.cpp)
+    DieTemp.cpp
+    SHTC3.cpp)
 
 pico_set_program_name(sem_pro_pico "sem_pro_pico")
 pico_set_program_version(sem_pro_pico "0.1")
@@ -69,6 +70,7 @@ target_link_libraries(sem_pro_pico
     pico_cyw43_arch_lwip_threadsafe_background
     pico_lwip_mqtt
     hardware_adc
+    hardware_i2c
 )
 
 pico_add_extra_outputs(sem_pro_pico)

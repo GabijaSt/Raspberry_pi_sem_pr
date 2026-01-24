@@ -108,7 +108,8 @@ void MyApp::connectToBroker(const ip_addr_t &ip)
 
     static mqtt_connect_client_info_t ci;
     memset(&ci, 0, sizeof(ci));
-    ci.client_id = "viny-deskline-server";
+    ci.client_id = "viny-pico-device-01";
+    ci.keep_alive = 60;  // Send keep-alive every 60 seconds
 
     // Use the C-style connection function and callback
     mqtt_client_connect(
@@ -217,6 +218,6 @@ void MyApp::run()
 
         printf("Temp: %.1f °C | Light: %.1f lux | RH: %.2f %%\n", tempC, light, humidity);
 
-        sleep_ms(2000);  // publish once per second
+        sleep_ms(30000);  // publish once per 30 seconds
     }
 }

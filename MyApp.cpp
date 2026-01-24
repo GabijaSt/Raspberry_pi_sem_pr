@@ -108,7 +108,7 @@ void MyApp::connectToBroker(const ip_addr_t &ip)
 
     static mqtt_connect_client_info_t ci;
     memset(&ci, 0, sizeof(ci));
-    ci.client_id = "pico_oop_client";
+    ci.client_id = "viny-deskline-server";
 
     // Use the C-style connection function and callback
     mqtt_client_connect(
